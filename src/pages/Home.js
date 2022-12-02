@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState } from 'react';
 import { 
     View,
     Text,
@@ -6,7 +6,10 @@ import {
     TextInput,
     Platform,
     TouchableOpacity
- } from "react-native"
+ } from 'react-native';
+
+ import { Button } from "../components/Button"
+
 
 export function Home() {
   const [newSkill, setNewSkill] = useState('');
@@ -27,13 +30,7 @@ export function Home() {
         onChangeText={setNewSkill}
         value={ newSkill }
       />
-      <TouchableOpacity
-        style={styles.button}
-        activeOpacity={0.7}
-        onPress={handleAddNewSkill}
-      >
-        <Text style={styles.buttonText}>Add</Text>
-      </TouchableOpacity>
+      <Button />
       <Text style={[styles.title, { marginVertical: 50 }]}>My Skills</Text>
 
       {
@@ -70,18 +67,6 @@ const styles = StyleSheet.create({
     padding: Platform.OS === "ios" ? 15 : 10,
     marginTop: 30,
     borderRadius: 7,
-  },
-  button: {
-    backgroundColor: "#a370f7",
-    padding: 15,
-    borderRadius: 7,
-    alignItems: "center",
-    marginTop: 20,
-  },
-  buttonText: {
-    color: "#ffffff",
-    fontSize: 17,
-    fontWeight: "bold",
   },
   buttonSkill: {
     backgroundColor: "#1f1e25",
