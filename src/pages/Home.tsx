@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
     View,
     Text,
@@ -11,19 +11,43 @@ import {
  import { Button } from '../components/Button';
  import { SkillCard } from '../components/SkillCard';
 
+ interface SkillData {
+    id: string;
+    name: string;
+
+ }
+
 
 export function Home() {
   const [newSkill, setNewSkill] = useState('');
-  const [mySkills, setMySkills] = useState([]);
+  const [mySkills, setMySkills] = useState<SkillData[]>([]);
+  const [greeting, setGreeting] = useState('');
 
   function handleAddNewSkill() {
-    setMySkills([...mySkills, newSkill]);
+    const data = {
+      id: String(new Date().getTime()),
+      name: newSkill
+    }
+    setMySkills([...mySkills, data]);
     setNewSkill('')
   }
+
+  useEffect(() => {
+    const currentHour = new Date().getHours();
+
+    if (currentHour < 12) {
+      setGreeting('Good Morning');
+    } else if (currentHour >= 12 && currentHour < 18) { 
+        setGreeting("Good Afternoon");
+    } else {
+      setGreeting("Good Evening");
+    }
+  }, [])
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Wellcome, John</Text>
+      <Text style={styles.greetings}>{greeting}</Text>
       <TextInput
         style={styles.input}
         placeholder="New skill"
@@ -33,13 +57,10 @@ export function Home() {
       />
       <Button onPress={handleAddNewSkill} />
       <Text style={[styles.title, { marginVertical: 50 }]}>My Skills</Text>
-
       <FlatList
         data={mySkills}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => (
-          <SkillCard skill={item} />
-        )}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => <SkillCard skill={item.name} />}
       />
     </View>
   )
@@ -64,5 +85,8 @@ const styles = StyleSheet.create({
     padding: Platform.OS === "ios" ? 15 : 10,
     marginTop: 30,
     borderRadius: 7,
-  }  
+  },
+  greetings: {
+    color: "#ffffff",
+  }
 })
